@@ -32,6 +32,8 @@ from bssp.common.nearest_neighbor_models import NearestNeighborRetriever, Neares
 from bssp.common.util import batch_queries, format_sentence
 from bssp.clres.dataset_reader import lemma_from_label, ClresConlluReader
 from bssp.fews.dataset_reader import FewsReader
+from bssp.flue.dataset_reader import FlueVerbReader      #### NEW HERE ####
+from bssp.eurosens.dataset_reader import EuroSenseReader #### NEW HERE ####
 from bssp.fine_tuning.models import StreusleFineTuningModel
 from bssp.fine_tuning.streusle import StreusleJsonReader
 from bssp.ontonotes.dataset_reader import OntonotesReader
@@ -73,7 +75,64 @@ def trial(corpus_slug, embedding_model, metric, override_weights, top_n, query_n
         bert_layers=[bert_layer],
     )
     predict(cfg)
+    
     label_freqs, lemma_freqs = read_stats(cfg)
+
+    #### NEW HERE ####
+    ### START Debug part ### 
+    ## Debug 1) Verfiy how many labels fall into each bin of train_freq_buckets
+    bins = cfg.train_freq_buckets 
+    for min_freq, max_freq in bins:
+        count = sum(1 for freq in label_freqs.values() if min_freq <= freq < max_freq)
+        print(f"DEBUG: Bin {min_freq}-{max_freq}: {count} labels")
+    
+    ## Debug 2) Plot the histogram of labels 
+    ''' 
+    import matplotlib.pyplot as plt
+    # Retrive all frequencies
+    frequencies = sorted(label_freqs.values(), reverse=True)
+    # Visualisation
+    plt.figure(figsize=(10,5))
+    plt.hist(frequencies, bins=20, edgecolor='black', log=True)
+    plt.xlabel("Nombre d'occurrences des labels")
+    plt.ylabel("Nombre de labels")
+    plt.title("Distribution des fréquences des labels dans FLUE")
+    plt.show()
+    ''' 
+    
+    ## Debug 3) Compute bins dynamically, according to label stats
+    import numpy as np
+    def get_dynamic_bins(label_freqs):
+        """
+        This function dynamically generates label frequency intervals (bins) from a label_freqs dictionary 
+        containing the occurrences of each label. These bins are constructed according to the quartiles
+        of the label frequencies, in order to adapt automatically to the distribution of the data.
+        """
+        frequencies = sorted(label_freqs.values(), reverse=True)
+        if len(frequencies) < 4:  # Gérer le cas où il y a trop peu de labels
+            return [(5, max(frequencies) if frequencies else 5)]
+        # Calcul des quartiles avec NumPy
+        q1, q2, q3 = np.percentile(frequencies, [25, 50, 75])
+        max_freq = max(frequencies)
+        # Convertir les valeurs en entiers
+        q1, q2, q3, max_freq = map(int, [q1, q2, q3, max_freq])
+        # Construction des bins en vérifiant qu'ils restent valides
+        bins = []
+        if 5 < q1:
+            bins.append((5, q1))
+        if q1 < q2:
+            bins.append((q1, q2))
+        if q2 < q3:
+            bins.append((q2, q3))
+        if q3 < max_freq:
+            bins.append((q3, max_freq))
+        return bins if bins else [(5, max_freq)]
+
+    # Generate the bins dynamically 
+    adjusted_train_freq_buckets = get_dynamic_bins(label_freqs)
+    print("DEBUG: adjusted_train_freq_buckets", adjusted_train_freq_buckets)
+    ### END Debug part ### 
+    #### NEW HERE ####
 
     #### MODIF HERE ####
     # df = pd.read_csv(paths.predictions_tsv_path(cfg), sep="\t", error_bad_lines=False) #### DEPRECATED ####
@@ -83,6 +142,8 @@ def trial(corpus_slug, embedding_model, metric, override_weights, top_n, query_n
     lemma_f = get_lemma_f(cfg)
     for min_train_freq, max_train_freq in cfg.train_freq_buckets:
         for min_rarity, max_rarity in cfg.prevalence_buckets:
+            print(f"Checking Bin: [{min_train_freq},{max_train_freq}) [{min_rarity},{max_rarity})") 
+
             print(f"Cutoff: [{min_train_freq},{max_train_freq}), Rarity: [{min_rarity},{max_rarity})")
             metrics_at_k(
                 cfg,
@@ -98,6 +159,7 @@ def trial(corpus_slug, embedding_model, metric, override_weights, top_n, query_n
 
 
 def read_datasets(cfg):
+
     if cfg.corpus_name == "clres":
         train_filepath = "data/pdep/pdep_train.conllu"
         test_filepath = "data/pdep/pdep_test.conllu"
@@ -111,6 +173,69 @@ def read_datasets(cfg):
         dev_dataset = read_dataset_cached(cfg, OntonotesReader, "dev", dev_filepath, with_embeddings=False)
         test_dataset = read_dataset_cached(cfg, OntonotesReader, "test", test_filepath, with_embeddings=False)
         test_dataset = dev_dataset + test_dataset
+
+    #### NEW HERE ####
+    elif cfg.corpus_name == "flue":
+        train_filepath = "data/flueverb/train_small" 
+        test_filepath = "data/flueverb/test"  
+        train_dataset = read_dataset_cached(cfg, FlueVerbReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, FlueVerbReader, "test", test_filepath, with_embeddings=False)
+     #### NEW HERE ####
+
+    #### NEW HERE ####
+    elif cfg.corpus_name == "eurosens_verbs":
+        train_filepath = "data/eurosens_verbs/eurosense_fr_verbs_train.xml" 
+        test_filepath = "data/eurosens_verbs/eurosense_fr_verbs_test.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_nouns":
+        train_filepath = "data/eurosens_nouns/eurosense_fr_nouns_train.xml" 
+        test_filepath = "data/eurosens_nouns/eurosense_fr_nouns_test.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_adjectives":
+        train_filepath = "data/eurosens_adjectives/eurosense_fr_adjectives_train.xml" 
+        test_filepath = "data/eurosens_adjectives/eurosense_fr_adjectives_test.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_adverbs":
+        train_filepath = "data/eurosens_adverbs/eurosense_fr_adverbs_train.xml" 
+        test_filepath = "data/eurosens_adverbs/eurosense_fr_adverbs_test.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_all":
+        train_filepath = "data/eurosens_all/eurosense_fr_all_train.xml" 
+        test_filepath = "data/eurosens_all/eurosense_fr_all_test.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+
+    elif cfg.corpus_name == "eurosens_verbs_swa":
+        train_filepath = "data/eurosens_verbs_singleWordAnchorOnly/eurosense_fr_verbs_train_swa.xml" 
+        test_filepath = "data/eurosens_verbs_singleWordAnchorOnly/eurosense_fr_verbs_test_swa.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_nouns_swa":
+        train_filepath = "data/eurosens_nouns_singleWordAnchorOnly/eurosense_fr_nouns_train_swa.xml" 
+        test_filepath = "data/eurosens_nouns_singleWordAnchorOnly/eurosense_fr_nouns_test_swa.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_adjectives_swa":
+        train_filepath = "data/eurosens_adjectives_singleWordAnchorOnly/eurosense_fr_adjectives_train_swa.xml" 
+        test_filepath = "data/eurosens_adjectives_singleWordAnchorOnly/eurosense_fr_adjectives_test_swa.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_adverbs_swa":
+        train_filepath = "data/eurosens_adverbs_singleWordAnchorOnly/eurosense_fr_adverbs_train_swa.xml" 
+        test_filepath = "data/eurosens_adverbs_singleWordAnchorOnly/eurosense_fr_adverbs_test_swa.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    elif cfg.corpus_name == "eurosens_all_swa":
+        train_filepath = "data/eurosens_all_singleWordAnchorOnly/eurosense_fr_all_train_swa.xml" 
+        test_filepath = "data/eurosens_all_singleWordAnchorOnly/eurosense_fr_all_test_swa.xml"
+        train_dataset = read_dataset_cached(cfg, EuroSenseReader, "train", train_filepath, with_embeddings=True)
+        test_dataset = read_dataset_cached(cfg, EuroSenseReader, "test", test_filepath, with_embeddings=False)
+    #### NEW HERE ####
+
     elif cfg.corpus_name == "semcor":
         train_dataset = read_dataset_cached(cfg, SemcorReader, "train", None, with_embeddings=True)
         test_dataset = read_dataset_cached(cfg, SemcorReader, "test", None, with_embeddings=False)
@@ -136,6 +261,15 @@ def read_stats(cfg):
         label_freqs = readf(f)
     with open(paths.freq_tsv_path(f"{cfg.corpus_name}_stats", "train", "lemma"), "r") as f:
         lemma_freqs = readf(f)
+
+    #### NEW HERE ####
+    ### begin DEBUG part ###
+    print(f"DEBUG: Total label frequencies: {len(label_freqs)}, Total lemma frequencies: {len(lemma_freqs)}")
+    print(f"DEBUG: Example label_freqs: {list(label_freqs.items())[:10]}")
+    print(f"DEBUG: Example lemma_freqs: {list(lemma_freqs.items())[:10]}")
+    ### end DEBUG part ###
+    #### NEW HERE ####
+
     return label_freqs, lemma_freqs
 
 
@@ -148,6 +282,17 @@ def get_lemma_f(cfg):
         lemma_f = bssp.semcor.dataset_reader.lemma_from_label
     elif cfg.corpus_name == "fews":
         lemma_f = bssp.fews.dataset_reader.lemma_from_label
+
+    #### NEW HERE ####
+    elif cfg.corpus_name == "flue":
+        lemma_f = bssp.flue.dataset_reader.lemma_from_label  
+    #### NEW HERE ####
+
+    #### NEW HERE ####
+    elif "eurosens" in cfg.corpus_name:
+        lemma_f = bssp.eurosens.dataset_reader.lemma_from_label  
+    #### NEW HERE ####
+
     else:
         raise Exception(f"Unknown corpus: {cfg.corpus_name}")
     return lemma_f
@@ -169,6 +314,9 @@ def predict(cfg):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     train_dataset, test_dataset = read_datasets(cfg)
+    print(f"Train dataset size: {len(train_dataset)}")
+    print(f"Test dataset size: {len(test_dataset)}")
+
     train_label_counts, train_lemma_counts = write_stats(cfg, train_dataset, test_dataset)
 
     indexer = make_indexer(cfg)
@@ -219,10 +367,44 @@ def predict(cfg):
 
     # remove any super-rare instances that did not occur at least 5 times in train
     # (these are not interesting to eval on)
-    instances = [i for i in test_dataset if train_label_counts[i["label"].label] >= 5]
+    if cfg.corpus_name == "flue":                                                         #### NEW HERE ####
+        instances = [i for i in test_dataset if train_label_counts[i["label"].label]]     #### NEW HERE ####
+    else:
+        instances = [i for i in test_dataset if train_label_counts[i["label"].label] >= 5] 
+
+
+    #### NEW HERE ####
+    ### start DEBUG part ###
+    #print(f"DEBUG: Labels in test_dataset before filtering: {[i['label'].label for i in test_dataset]}")
+    #print(f"DEBUG: Labels after filtering (>= 5 occurrences): {[i['label'].label for i in instances]}")
+    print(f"DEBUG: Size of train_label_counts: {len(train_label_counts)}")
+    print(f"DEBUG: Examples from train_label_counts: {list(train_label_counts.items())[:10]}")
+    # Checking the frequency distribution in train_label_counts
+    freq_values = list(train_label_counts.values())
+    # How many labels have a frequency >= 5?
+    num_labels_ge_5 = sum(1 for v in freq_values if v >= 5)
+    num_labels_total = len(freq_values)
+    print(f"DEBUG: Total number of labels in train_label_counts: {num_labels_total}")
+    print(f"DEBUG: Number of labels with freq >= 5: {num_labels_ge_5}")
+    print(f"DEBUG: Percentage of labels with freq >= 5: {100 * num_labels_ge_5 / num_labels_total:.2f}%")
+    # Retrieve unique labels from the test_dataset
+    test_labels = {i["label"].label for i in test_dataset}
+    # Check how many are present in train_label_counts
+    common_labels = test_labels & set(train_label_counts.keys())
+    missing_labels = test_labels - set(train_label_counts.keys())
+    print(f"DEBUG: Total number of labels in test_dataset: {len(test_labels)}")
+    print(f"DEBUG: Number of labels common between test and train: {len(common_labels)}")
+    print(f"DEBUG: Number of test labels that are MISSING from train: {len(missing_labels)}")
+    print(f"DEBUG: Examples of test labels missing from train: {list(missing_labels)[:10]}")
+    ### end DEBUG part ###
+    #### NEW HERE ####
+
+
+
     # We are abusing the batch abstraction here--really a batch should be a set of independent instances,
     # but we are using it here as a convenient way to feed in a single instance.
     batches = batch_queries(instances, cfg.query_n)
+
     with open(predictions_path, "wt") as f, torch.no_grad():
         tsv_writer = csv.writer(f, delimiter="\t")
         header = ["sentence", "label", "lemma", "label_freq_in_train"]
@@ -321,11 +503,24 @@ def summarize(corpus_slug, embedding_model, metric, override_weights, top_n, que
 
     lemma_f = get_lemma_f(cfg)
 
-    low_freq, high_freq = (5, 500), (500, 1e9)
-    low_rarity, high_rarity = (0.0, 0.25), (0.25, 1.0)
+    if cfg.corpus_name == "flue":                                                   #### NEW HERE ####
+        low_freq, high_freq = (1, 2), (2, 24) #(5, 15), (15, 25)                    #### NEW HERE ####
+        low_rarity, high_rarity = (0.0, 1.0), (0.0, 1.0)                            #### NEW HERE ####
+    else:
+        low_freq, high_freq = (5, 500), (500, 1e9)
+        low_rarity, high_rarity = (0.0, 0.25), (0.25, 1.0)
+    
+    ### NEW HERE ### Print available files in the prediction folder
+    predictions_dir = paths.bucketed_metric_at_k_path(cfg, "", "", "", "", "").rsplit("/", 1)[0]
+    print(f"\nChecking files in: {predictions_dir}")
+    available_files = set(os.listdir(predictions_dir)) 
+    print(f"Found {len(available_files)} files.")
+    #print("available files:",available_files)
+    ### NEW HERE ###
 
     for min_train_freq, max_train_freq in [low_freq, high_freq]:
         for min_rarity, max_rarity in [low_rarity, high_rarity]:
+            print(f"\nProcessing Bin: l=[{min_train_freq},{max_train_freq}) and r=[{min_rarity},{max_rarity})")
             metrics_at_k(
                 cfg,
                 df,
@@ -387,19 +582,56 @@ def summarize(corpus_slug, embedding_model, metric, override_weights, top_n, que
                     ]
                     f.write("\t".join(str(x) for x in vals) + "\n")
 
+
             if cfg.metric == "baseline":
                 oprec = pickle_read(pathf("oprec"))
                 bprec = pickle_read(baseline_pathf("prec"))
                 orec = pickle_read(pathf("orec"))
                 brec = pickle_read(baseline_pathf("rec"))
+
+                #### NEW HERE #### 
+                # Verfify empty files and skip empty files without causing an error. 
+                if bprec is None or brec is None:
+                    print(f"Warning: Skipping bin l=[{min_train_freq},{max_train_freq}) and r=[{min_rarity},{max_rarity}) due to missing baseline precision or recall.")
+                    continue
+                if oprec is None or orec is None:
+                    print(f"Warning: Skipping bin l=[{min_train_freq},{max_train_freq}) and r=[{min_rarity},{max_rarity}) due to missing oracle precision or recall.")
+                    continue
+                #### NEW HERE #### 
+
                 write_row(bprec, brec, baseline_kind="random baseline")
                 write_row(oprec, orec, baseline_kind="oracle")
             else:
+
+                #### NEW HERE #### 
+                # Check file existence before attempting to read
+                prec_path, rec_path = pathf("prec"), pathf("rec")
+                prec_file, rec_file = os.path.basename(prec_path), os.path.basename(rec_path)
+                print("prec_file:", prec_file)
+                print("rec_file:", rec_file)
+
+                if prec_file not in available_files or rec_file not in available_files:
+                    print(f"Warning: Missing {prec_file if prec_file not in available_files else ''} "
+                        f"{rec_file if rec_file not in available_files else ''}. Skipping bin.")
+                    continue  # Skip this bin
+                #### NEW HERE #### 
+
+                # Load precision and recall data
                 prec = pickle_read(pathf("prec"))
                 rec = pickle_read(pathf("rec"))
+
+                #### NEW HERE #### 
+                # Verfify empty files and skip empty files without causing an error. 
+                if prec is None or rec is None:
+                    print(f"Warning: Skipping bin l=[{min_train_freq},{max_train_freq}) and r=[{min_rarity},{max_rarity}) due to missing precision or recall.")
+                    continue
+                #### NEW HERE #### 
+
                 write_row(prec, rec)
+                print(f"Bin l=[{min_train_freq},{max_train_freq}) and r=[{min_rarity},{max_rarity}) correctly processed.\n")
 
 
+                
 @cli.command(
     help="fine-tune a `transformers` model identified by transformer_model_name, "
     "and save the weights in PyTorch format to serialization_path"

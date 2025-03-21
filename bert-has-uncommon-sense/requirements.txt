@@ -1,0 +1,135 @@
+aiohappyeyeballs==2.4.4
+aiohttp==3.10.11
+aiosignal==1.3.1
+allennlp==2.10.1
+allennlp-models==2.10.1
+async-timeout==5.0.1
+attrs==25.1.0
+base58==2.1.1
+beautifulsoup4==4.12.3
+blis==0.7.11
+boto3==1.36.11
+botocore==1.36.11
+bs4==0.0.2
+cached-path==1.1.6
+cachetools==5.5.1
+catalogue==2.0.10
+certifi==2025.1.31
+charset-normalizer==3.4.1
+click==8.1.8
+commonmark==0.9.1
+conllu==4.4.2
+contourpy @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_97c8ctlp86/croots/recipe/contourpy_1663827422071/work
+cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
+cymem==2.0.11
+datasets==2.10.1
+dill==0.3.6
+docker-pycreds==0.4.0
+exceptiongroup==1.2.2
+fairscale==0.4.6
+filelock==3.7.1
+fonttools @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_60c8ux4mkl/croot/fonttools_1713551354374/work
+frozenlist==1.5.0
+fsspec==2025.2.0
+ftfy==6.2.3
+gitdb==4.0.12
+GitPython==3.1.44
+google-api-core==2.24.1
+google-auth==2.38.0
+google-cloud-core==2.4.1
+google-cloud-storage==2.19.0
+google-crc32c==1.5.0
+google-resumable-media==2.7.2
+googleapis-common-protos==1.66.0
+h5py==3.11.0
+huggingface-hub==0.10.1
+idna==3.10
+importlib_resources @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_784gdd8gq5/croot/importlib_resources-suite_1720641109833/work
+iniconfig==2.0.0
+Jinja2==3.1.5
+jmespath==1.0.1
+joblib==1.4.2
+jsonnet==0.20.0
+kiwisolver @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_93o8te804v/croot/kiwisolver_1672387163224/work
+langcodes==3.4.1
+language_data==1.3.0
+lmdb==1.6.2
+lxml @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_e656pjhd5l/croot/lxml_1722882197113/work
+marisa-trie==1.2.1
+MarkupSafe==2.1.5
+matplotlib @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_a23xd3m8b1/croot/matplotlib-suite_1693812470272/work
+more-itertools==10.5.0
+multidict==6.1.0
+multiprocess==0.70.14
+murmurhash==1.0.12
+nltk==3.9.1
+numpy @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_f9f5xs2fx0/croot/numpy_and_numpy_base_1682520577456/work
+packaging @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_81ri4yfpjw/croot/packaging_1720101866878/work
+pandas==2.0.3
+pathlib_abc==0.1.1
+pathtools==0.1.2
+pathy==0.11.0
+pillow @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_617xe_y58w/croot/pillow_1721059447446/work
+pluggy==1.5.0
+preshed==3.0.9
+promise==2.3
+propcache==0.2.0
+proto-plus==1.26.0
+protobuf==3.20.3
+psutil==6.1.1
+py-rouge==1.1
+pyarrow==17.0.0
+pyasn1==0.6.1
+pyasn1_modules==0.4.1
+pydantic==1.8.2
+Pygments==2.19.1
+pyparsing @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_3b_3vxnd07/croots/recipe/pyparsing_1661452540919/work
+pytest==8.3.4
+python-dateutil @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_66ud1l42_h/croot/python-dateutil_1716495741162/work
+pytz==2025.1
+PyYAML==6.0.2
+regex==2024.11.6
+requests==2.32.3
+responses==0.18.0
+rich==12.6.0
+rsa==4.9
+s3transfer==0.11.2
+sacremoses==0.1.1
+scikit-learn==1.3.2
+scipy==1.10.1
+sentencepiece==0.2.0
+sentry-sdk==2.20.0
+setproctitle==1.3.4
+shortuuid==1.0.13
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+smart-open==6.4.0
+smmap==5.0.2
+soupsieve==2.6
+spacy==3.3.3
+spacy-legacy==3.0.12
+spacy-loggers==1.0.5
+srsly==2.4.8
+tensorboardX==2.6.2.2
+termcolor==1.1.0
+thinc==8.0.17
+threadpoolctl==3.5.0
+tokenizers @ file:///Users/runner/miniforge3/conda-bld/tokenizers_1653159019510/work
+tomli==2.2.1
+torch==1.12.1
+torchvision==0.13.1
+tornado @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_a4w03z48br/croot/tornado_1718740114858/work
+tqdm==4.67.1
+traitlets==5.14.3
+transformers==4.20.1
+typer==0.4.2
+typing_extensions==4.5.0
+tzdata==2025.1
+unicodedata2 @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_a3epjto7gs/croot/unicodedata2_1713212955584/work
+urllib3==1.26.20
+wandb==0.12.21
+wasabi==0.10.1
+wcwidth==0.2.13
+word2number==1.1
+xxhash==3.5.0
+yarl==1.15.2
+zipp @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_99az8pifo0/croot/zipp_1729012379243/work

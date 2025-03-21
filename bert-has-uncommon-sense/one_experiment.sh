@@ -1,5 +1,5 @@
 ###############################################################
-# NEW SCRIPT created to run ONE experiment of our choice.
+# NEW SCRIPT created by Lila to run ONE experiment of our choice.
 # This script is heavily inspired by the script all_experiments.sh 
 ###############################################################
 
@@ -36,22 +36,25 @@
 
 # ---- Start of Script ----
 
+
+
+
 # Activate the conda environment containing necessary dependencies
 eval "$(conda shell.bash hook)" 
 # Switch to the `bhus` environment before running the experiments
 conda activate bhus 
 
 # Iterate over the two datasets: OntoNotes and CLReS
-for CORPUS in "clres"; do ### POSSIBLE OPTIONS: "ontonotes" "clres"
+for CORPUS in "flue"; do ### POSSIBLE OPTIONS: "ontonotes" "clres" et NEW: "flue"
   
-  ###### I commented this section since I already run the baseline models 
+  ###### I commented this section since I already run the baseline 
   # Run baseline trials and summarization using BERT-base-cased
   # python main.py trial --embedding-model "bert-base-cased" --metric "baseline" --query-n 1 --bert-layer 7 "$CORPUS" 
   # python main.py summarize --embedding-model "bert-base-cased" --metric "baseline" --query-n 1 --bert-layer 7 "$CORPUS"
   ######
 
   # Iterate over different transformer models
-  for BERT_MODEL in "roberta-base" ; do ### POSSIBLE OPTIONS: "bert-base-cased" "distilbert-base-cased" "roberta-base" "distilroberta-base" "albert-base-v2" "xlnet-base-cased" "gpt2"
+  for BERT_MODEL in "camembert-base" ; do ### POSSIBLE OPTIONS: "bert-base-cased" "distilbert-base-cased" "roberta-base" "distilroberta-base" "albert-base-v2" "xlnet-base-cased" "gpt2"  et NEW: "camembert-base" 
 
     # Determine which layer to use for embedding extraction
     # DistilBERT and DistilRoBERTa have only 6 layers, so we use the 5th (indexing from 0)
@@ -66,7 +69,7 @@ for CORPUS in "clres"; do ### POSSIBLE OPTIONS: "ontonotes" "clres"
 
     # Iterate over different numbers of fine-tuning instances (0 means no fine-tuning)
     # NUM_INSTS is the number of examples we fine-tune our model on 
-    for NUM_INSTS in 100 ; do  ### POSSIBLE OPTIONS: 0 100 250 500 1000 2500
+    for NUM_INSTS in 0 ; do  ### POSSIBLE OPTIONS: 0 100 250 500 1000 2500
       if [ "$NUM_INSTS" -eq "0" ];
       then
         # If NUM_INSTS is 0, run trials and summarization **without fine-tuning**
