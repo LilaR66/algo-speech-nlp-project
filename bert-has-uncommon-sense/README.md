@@ -1,6 +1,6 @@
 # Running and Modifying the Experiments
 
-This file explains how to run the experiments to replicate the results.
+This file explains how to run the experiments to replicate the results. \
 *Author: Lila Roig*
 
 **Paper on which our project is based:**
