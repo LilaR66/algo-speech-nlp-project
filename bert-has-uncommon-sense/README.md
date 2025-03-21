@@ -156,16 +156,16 @@ These files were added to extend or adapt the original implementation.
 
 > **Note**: If any of the files listed below are not found in the specified location, please refer to the README files in the `EuroSENS_dataset` and `FLUEverb_dataset` directories.  
 > They explain how to generate these files and where to place them properly.
-//
+
 - `bert-has-uncommon-sense/one_exeriment.sh`  
 - `bert-has-uncommon-sense/bssp/eurosens/dataset_reader.py`  
 - `bert-has-uncommon-sense/bssp/flue/dataset_reader.py`  
-//
+ <br>
 - `bert-has-uncommon-sense/data/flueverb/train_small/wiktionary-190418.filtered_verbs.xml`  
 - `bert-has-uncommon-sense/data/flueverb/train_small/wiktionary-190418.filtered_verbs.gold.key.txt`  
 - `bert-has-uncommon-sense/data/flueverb/test/FSE-1.1.data.xml`  
 - `bert-has-uncommon-sense/data/flueverb/test/FSE-1.1.gold.key.txt`  
-//
+ <br>
 - `bert-has-uncommon-sense/data/eurosens_adjectives/eurosense_fr_adjectives_train.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adjectives/eurosense_fr_adjectives_test.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adjectives_singleWordAnchorOnly/eurosense_fr_adjectives_train_swa.xml`  
