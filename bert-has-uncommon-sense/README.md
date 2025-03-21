@@ -1,11 +1,7 @@
-title: "Running and Modifying the Experiments"
-author: Lila Roig
-date: 2025-03-21
----
-
 # Running and Modifying the Experiments
 
 This file explains how to run the experiments to replicate the results.
+*Author: Lila Roig*
 
 **Paper on which our project is based:**
  https://arxiv.org/abs/2109.09780
@@ -160,41 +156,41 @@ These files were added to extend or adapt the original implementation.
 
 > **Note**: If any of the files listed below are not found in the specified location, please refer to the README files in the `EuroSENS_dataset` and `FLUEverb_dataset` directories.  
 > They explain how to generate these files and where to place them properly.
-
+//
 - `bert-has-uncommon-sense/one_exeriment.sh`  
 - `bert-has-uncommon-sense/bssp/eurosens/dataset_reader.py`  
 - `bert-has-uncommon-sense/bssp/flue/dataset_reader.py`  
-
+//
 - `bert-has-uncommon-sense/data/flueverb/train_small/wiktionary-190418.filtered_verbs.xml`  
 - `bert-has-uncommon-sense/data/flueverb/train_small/wiktionary-190418.filtered_verbs.gold.key.txt`  
 - `bert-has-uncommon-sense/data/flueverb/test/FSE-1.1.data.xml`  
 - `bert-has-uncommon-sense/data/flueverb/test/FSE-1.1.gold.key.txt`  
-
+//
 - `bert-has-uncommon-sense/data/eurosens_adjectives/eurosense_fr_adjectives_train.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adjectives/eurosense_fr_adjectives_test.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adjectives_singleWordAnchorOnly/eurosense_fr_adjectives_train_swa.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adjectives_singleWordAnchorOnly/eurosense_fr_adjectives_test_swa.xml`  
-
+//
 - `bert-has-uncommon-sense/data/eurosens_adverbs/eurosense_fr_adverbs_train.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adverbs/eurosense_fr_adverbs_test.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adverbs_singleWordAnchorOnly/eurosense_fr_adverbs_train_swa.xml`  
 - `bert-has-uncommon-sense/data/eurosens_adverbs_singleWordAnchorOnly/eurosense_fr_adverbs_test_swa.xml`  
-
+//
 - `bert-has-uncommon-sense/data/eurosens_nouns/eurosense_fr_nouns_train.xml`  
 - `bert-has-uncommon-sense/data/eurosens_nouns/eurosense_fr_nouns_test.xml`  
 - `bert-has-uncommon-sense/data/eurosens_nouns_singleWordAnchorOnly/eurosense_fr_nouns_train_swa.xml`  
 - `bert-has-uncommon-sense/data/eurosens_nouns_singleWordAnchorOnly/eurosense_fr_nouns_test_swa.xml`  
-
+//
 - `bert-has-uncommon-sense/data/eurosens_verbs/eurosense_fr_verbs_train.xml`  
 - `bert-has-uncommon-sense/data/eurosens_verbs/eurosense_fr_verbs_test.xml`  
 - `bert-has-uncommon-sense/data/eurosens_verbs_singleWordAnchorOnly/eurosense_fr_verbs_train_swa.xml`  
 - `bert-has-uncommon-sense/data/eurosens_verbs_singleWordAnchorOnly/eurosense_fr_verbs_test_swa.xml`  
-
+//
 - `bert-has-uncommon-sense/data/eurosens_all/eurosense_fr_all_train.xml`  
 - `bert-has-uncommon-sense/data/eurosens_all/eurosense_fr_all_test.xml`  
 - `bert-has-uncommon-sense/data/eurosens_all_singleWordAnchorOnly/eurosense_fr_all_train_swa.xml`  
 - `bert-has-uncommon-sense/data/eurosens_all_singleWordAnchorOnly/eurosense_fr_all_test_swa.xml`  
-
+//
 - `EuroSENS_dataset/filter_eurosens_french.py`  
 - `EuroSENS_dataset/filter_eurosens_french_by_pos.py`  
 - `EuroSENS_dataset/create_eurosens_splits.py`  
@@ -203,7 +199,7 @@ These files were added to extend or adapt the original implementation.
 - `EuroSENS_dataset/helpers/count_annotations.py`  
 - `EuroSENS_dataset/helpers/most_frequent_word_sense.sh`  
 - `EuroSENS_dataset/helpers/compare_sentence_ids.sh`  
-
+//
 - `FLUEverb_dataset/prepare_data.py`  
 - `FLUEverb_dataset/modules/`  
 - `FLUEverb_dataset/filter_dataset.py`  
