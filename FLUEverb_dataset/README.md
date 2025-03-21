@@ -1,10 +1,7 @@
-title: "FLUE Dataset Setup and Preprocessing"
-author: Lila Roig
-date: 2025-03-21
----
 # FLUE Dataset Setup and Preprocessing
 
-This file explains how to download and set up the **FLUE dataset** to reproduce the experiments.
+This file explains how to download and set up the **FLUE dataset** to reproduce the experiments.\
+*Author: Lila Roig*
 
 ## STEP 1: Download the FLUE dataset
 
