@@ -1,0 +1,3 @@
+[submodule "bert-has-uncommon-sense/data/streusle"]
+	path = bert-has-uncommon-sense/data/streusle
+	url = git@github.com:nert-nlp/streusle.git
