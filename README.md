@@ -29,27 +29,27 @@ For our project, we focus on the paper *BERT Has Uncommon Sense: Similarity Rank
 Our work is organized into four main stages: 
 
 ### 1) Reproducing Original Results 
-**Contributor:** *David Arrustico, Abdellah Rebaine, Lila Roig*
+**Contributor:** *David Arrustico, Abdellah Rebaine, Lila Roig* \
 We began by reproducing the results of Gessler & Schneider (2021), using the original codebase:
 - Evaluated multiple transformer models: BERT, RoBERTa, DistilBERT, ALBERT, XLNet, and GPT-2.
 - Tested on OntoNotes 5.0 and PDEP datasets.
 - Compared model performance at different fine-tuning levels (0, 100, 250, 500, 1000, 2500 examples), within our computational constraints.
 
 ### 2) Extending to French Models and Datasets 
-**Contributor:** *Lila Roig*
+**Contributor:** *Lila Roig* \
 This phase extended the original experiments to French-language resources:
 - Adapted the code to support CamemBERT-base, a transformer model specifically trained for French.
 - Integrated two French WSD datasets: FLUE and EuroSENS, ensuring compatibility with the existing pipeline.
 - Ran new experiments to evaluate performance on French contextual word sense disambiguation.
 
 ### 3) Exploring Alternative Similarity Metrics
-**Contributor:** *Abdellah Rebaine*
+**Contributor:** *Abdellah Rebaine* \
 The original paper relied solely on cosine similarity for comparing contextual embeddings. In this extension:
 - We tested Euclidean distance as an alternative to evaluate the robustness of model performance across metrics.
 - This paves the way for future inclusion of other distance or classification-based approaches.
 
 ### 4) Analyzing Embedding Layers 
-**Contributor:** *David Arrustico*
+**Contributor:** *David Arrustico* \
 Investigated the assumption that the final layer gives the most meaningful word representation.
 We reran the experiments using embeddings from the first layer, as well as several intermediate layers, instead of the final one.
 This allowed us to track how representational quality evolves throughout the network’s depth, and whether deeper always means better.
