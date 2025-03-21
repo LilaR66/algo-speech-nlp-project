@@ -3,6 +3,8 @@
 This file explains how to download and set up the **FLUE dataset** to reproduce the experiments.\
 *Author: Lila Roig*
 
+---
+
 ## STEP 1: Download the FLUE dataset
 
 **FLUE paper**:  
@@ -147,6 +149,7 @@ alimenter__V
 Used to filter relevant verbs from the XML files.  
 **Not used in our project.**
 
+---
 
 ## STEP 3: Filter training set to keep only verb annotations
 
@@ -171,6 +174,7 @@ gold_output = "train_small/wiktionary-190418.filtered_verbs.gold.key.txt"
 
 We now have a filtered **`train_small`** dataset containing **only verbs**.
 
+---
 
 ## STEP 4: Move the files to the correct folder
 
@@ -194,6 +198,8 @@ To:
 `bert-has-uncommon-sense/data/flueverb/test/`
 
 **FLUE is now ready for WSD.**
+
+---
 
 ## (Optional) Note:
 
