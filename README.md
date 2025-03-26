@@ -1,10 +1,8 @@
-# Speech and Natural Language Processing Project 
+# Project Word Sense Disambiguation (WSD)
 
-This project was completed as part of the **Speech and Natural Language Processing** course in the **MVA Master 2024–2025** program.
+This project was completed as part of the **MVA Master 2024–2025** program.
 
 - **Students**: Abdellah Rebaine, David Arrustico, Lila Roig  
-- **Project Supervisor**: Aina Garí Soler ([aina.gari-soler@inria.fr](mailto:aina.gari-soler@inria.fr))  
-- **Course Webpage**: [https://github.com/chloedaphne/MVA_2025_SNLP](https://github.com/chloedaphne/MVA_2025_SNLP)
 
 ### Paper Reference
 
