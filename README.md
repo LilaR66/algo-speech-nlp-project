@@ -1,4 +1,4 @@
-# PROJECT: BERT Has Uncommon Sense: Similarity Ranking for Word Sense BERTology
+# PROJECT: BERT Has Uncommon Sense: *Similarity Ranking for Word Sense BERTology*
 
 This project was completed as part of the **MVA Master 2024–2025** program.
 
