@@ -160,7 +160,8 @@ These files were added to extend or adapt the original implementation.
 
 - `bert-has-uncommon-sense/one_exeriment.sh`  
 - `bert-has-uncommon-sense/bssp/eurosens/dataset_reader.py`  
-- `bert-has-uncommon-sense/bssp/flue/dataset_reader.py`  
+- `bert-has-uncommon-sense/bssp/flue/dataset_reader.py`
+- `bert-has-uncommon-sense/scripts/all_experiments_all_layers.sh`    
 
 _
 - `bert-has-uncommon-sense/data/flueverb/train_small/wiktionary-190418.filtered_verbs.xml`  
@@ -208,9 +209,14 @@ _
 - `EuroSENS_dataset/helpers/most_frequent_word_sense.sh`  
 - `EuroSENS_dataset/helpers/compare_sentence_ids.sh`  
 
- _
+_
 - `FLUEverb_dataset/prepare_data.py`  
 - `FLUEverb_dataset/modules/`  
 - `FLUEverb_dataset/filter_dataset.py`  
 - `FLUEverb_dataset/test_clres_conllu_reader.py`  
 - `FLUEverb_dataset/DATA_DIR/`
+
+_
+- `pdep_in_depth/counting.py`
+- `pdep_in_depth/format_pdep.py`
+- `pdep_in_depth/ranks.py`
